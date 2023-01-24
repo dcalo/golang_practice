@@ -8,5 +8,8 @@ func (s *Server) routes() {
 	core.Use()
 	{
 		core.GET("/hola", s.handlerHello)
+		core.POST("/add-bills/:name", s.handlerAddBills)
+		core.GET("/buscar/:name",s.handlerBuscar)
 	}
+
 }

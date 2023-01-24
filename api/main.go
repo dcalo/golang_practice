@@ -1,6 +1,7 @@
 package main
 
 import (
+	
 	"log"
 
 	myPack1 "example.com/myProject/adapters"
@@ -11,6 +12,7 @@ func main() {
 	if err := server.Run(":3000"); err != nil {
 
 		log.Fatalln("Can't start the server")
+		
 
 	}
 
