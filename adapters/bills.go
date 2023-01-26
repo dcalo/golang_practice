@@ -5,10 +5,13 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"reflect"
 	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
+
+	my_conn "example.com/myProject/internal/config"
 )
 
 type Bill struct {
@@ -90,10 +93,20 @@ func (s *Server) handlerGenerate(c *gin.Context) {
 	log.Println("after unmarshall: ", unmarshalled_bill)
 
 	valor1, valor2, valor3 := procesar1(5)
-	log.Println("respeustas: ", valor1, valor2, valor3)
+	log.Println("respuestas: ", valor1, valor2, valor3)
 
 	valor4, valor5, valor6 := procesar1(10)
-	log.Println("respeustas: ", valor4, valor5, valor6)
+	log.Println("respuestas: ", valor4, valor5, valor6)
+
+	//validacion
+	x := T{5}
+	log.Println(reflect.TypeOf(x))
+	x.a()
+	x.b()
+	log.Println("Final value:", &x.val)
+
+	// probar conexion de bd
+	my_conn.Start_connection()
 
 	// response
 	c.IndentedJSON(http.StatusOK, bills)
@@ -105,4 +118,29 @@ func procesar1(a int) (r1 int, r2 float32, err error) {
 		return 0, 0, errors.New("error 1")
 	}
 	return a * 3, float32(a), nil
+}
+
+type T struct {
+	val int
+}
+
+type A struct {
+	val  int
+	val2 bool
+}
+
+func (p *T) a() {
+	log.Println("type:", reflect.TypeOf(p))
+	log.Println("value of val before:", p.val)
+	p.val += 1
+
+	log.Println("value of val after:", p.val)
+}
+
+func (p T) b() {
+	log.Println(reflect.TypeOf(p))
+	log.Println("value of val before:", p.val)
+	p.val += 1
+
+	log.Println("value of val after:", p.val)
 }
